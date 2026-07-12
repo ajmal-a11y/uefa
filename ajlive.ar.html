@@ -27,14 +27,6 @@
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; width:100%; height:100%; background:var(--aj-bg); overflow:hidden; font-family:'IBM Plex Sans',system-ui,sans-serif; }
 
-  /* ============================================================
-     Base structural rules DPlayer's JS depends on. All scoped to
-     .ajlive-player — we never write a bare ".dplayer" rule. The
-     container also carries a literal "dplayer" class because the
-     library hardcodes it internally for its own state machine
-     (dplayer-playing / dplayer-live / dplayer-loading etc.); that
-     class exists on the element but has none of our CSS keyed to it.
-     ============================================================ */
   .ajlive-player{
     position:absolute; inset:0; width:100%; height:100%;
     overflow:hidden; -webkit-user-select:none; user-select:none; line-height:1;
@@ -47,14 +39,12 @@
   .ajlive-player.dplayer-fulled{ position:fixed; z-index:100000; left:0; top:0; width:100% !important; height:100% !important; }
   .ajlive-player.dplayer-hide-controller{ cursor:none; }
 
-  /* video */
   .ajlive-player .dplayer-video-wrap{ position:relative; background:#000; font-size:0; width:100%; height:100%; }
   .ajlive-player .dplayer-video-wrap .dplayer-video{ width:100%; height:100%; display:none; object-fit:contain; }
   .ajlive-player .dplayer-video-wrap .dplayer-video-current{ display:block; }
   .ajlive-player .dplayer-mask{ position:absolute; inset:0; z-index:1; display:none; }
   .ajlive-player .dplayer-mask.dplayer-mask-show{ display:block; }
 
-  /* faint CRT scanline texture + vignette — our own overlay, inert to DPlayer's own logic */
   .ajlive-overlay-scanlines{ position:absolute; inset:0; pointer-events:none; z-index:1; opacity:.05;
     background:repeating-linear-gradient(to bottom,#fff 0px,#fff 1px,transparent 1px,transparent 3px); mix-blend-mode:overlay; }
   .ajlive-overlay-vignette{ position:absolute; inset:0; pointer-events:none; z-index:1;
@@ -62,7 +52,6 @@
     transition:opacity .3s ease; }
   .ajlive-player.dplayer-playing.dplayer-hide-controller .ajlive-overlay-vignette{ opacity:0; }
 
-  /* viewfinder registration brackets — the one true signature flourish */
   .ajlive-frame{ position:absolute; inset:16px; pointer-events:none; z-index:2; opacity:.55; transition:opacity .35s ease; }
   .ajlive-player.dplayer-hide-controller .ajlive-frame{ opacity:0; }
   .ajlive-frame span{ position:absolute; width:18px; height:18px; border-color:rgba(255,255,255,.75); }
@@ -71,7 +60,6 @@
   .ajlive-frame .fc-bl{ bottom:0; left:0; border-bottom:1.5px solid; border-left:1.5px solid; }
   .ajlive-frame .fc-br{ bottom:0; right:0; border-bottom:1.5px solid; border-right:1.5px solid; }
 
-  /* injected brand header (bug + viewer readout) — not part of DPlayer's own DOM */
   .ajlive-header{ position:absolute; top:0; left:0; right:0; z-index:3; display:flex; align-items:flex-start;
     justify-content:space-between; padding:16px 18px; transition:transform .35s ease, opacity .35s ease; pointer-events:none; }
   .ajlive-player.dplayer-hide-controller .ajlive-header{ transform:translateY(-10px); opacity:0; }
@@ -88,7 +76,6 @@
   .ajlive-readout-label{ font-family:'IBM Plex Mono',monospace; font-size:8.5px; letter-spacing:1.5px; color:var(--aj-text-dim); text-transform:uppercase; }
   .ajlive-readout-value{ font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:var(--aj-text); }
 
-  /* injected center transport button, synced to DPlayer's own state classes */
   .ajlive-bigplay{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.9); z-index:2;
     width:60px; height:60px; border:1.5px solid rgba(255,255,255,.5); background:rgba(10,10,10,.4);
     display:flex; align-items:center; justify-content:center; cursor:pointer;
@@ -98,7 +85,6 @@
   .ajlive-player.dplayer-loading .ajlive-bigplay{ display:none; }
   .ajlive-bigplay svg{ width:22px; height:22px; margin-left:3px; }
 
-  /* loading bezel — recolored dot spinner, no wording changes needed */
   .ajlive-player .dplayer-bezel{ position:absolute; inset:0; font-size:22px; color:var(--aj-text); pointer-events:none; }
   .ajlive-player .dplayer-bezel .dplayer-bezel-icon{ display:none; }
   .ajlive-player .dplayer-bezel .dplayer-danloading{ display:none; }
@@ -115,7 +101,6 @@
     opacity:0; transition:opacity .2s ease; }
   .ajlive-player.dplayer-loading .ajlive-scanloader-label{ opacity:1; }
 
-  /* controller mask + bar (mask replaced by our vignette above; keep DPlayer's own transform toggling working) */
   .ajlive-player .dplayer-controller-mask{ display:none; }
   .ajlive-player .dplayer-controller{ position:absolute; bottom:0; left:0; right:0; height:52px; padding:0 10px;
     background:var(--aj-panel); border-top:1px solid var(--aj-tally);
@@ -128,7 +113,6 @@
     .ajlive-player.dplayer-playing:hover .dplayer-controller{ opacity:1; }
   }
 
-  /* progress bar (hidden for live, kept functional if ever toggled) */
   .ajlive-player.dplayer-live .dplayer-bar-wrap{ display:none; }
   .ajlive-player.dplayer-live .dplayer-setting-loop{ display:none; }
   .ajlive-player .dplayer-bar-wrap{ padding:5px 0; cursor:pointer; position:absolute; bottom:33px; width:calc(100% - 20px); height:3px; }
@@ -137,7 +121,6 @@
   .ajlive-player .dplayer-played{ position:absolute; left:0; top:0; bottom:0; height:3px; background:var(--aj-tally) !important; }
   .ajlive-player .dplayer-played .dplayer-thumb{ position:absolute; top:0; right:5px; margin:-4px -10px 0 0; height:11px; width:11px; border-radius:1px; background:var(--aj-text) !important; }
 
-  /* icon row */
   .ajlive-player .dplayer-icons{ height:38px; position:absolute; bottom:0; display:flex; align-items:center; }
   .ajlive-player .dplayer-icons-left{ left:6px; }
   .ajlive-player .dplayer-icons-right{ right:6px; }
@@ -147,14 +130,12 @@
   .ajlive-player .dplayer-icon .dplayer-icon-content{ opacity:1; transition:none; }
   .ajlive-player .dplayer-comment{ display:none !important; }
 
-  /* danmaku — unused, keep fully hidden */
   .ajlive-player.dplayer-no-danmaku .dplayer-danmaku,
   .ajlive-player.dplayer-no-danmaku .dplayer-comment,
   .ajlive-player.dplayer-no-danmaku .dplayer-setting-showdan,
   .ajlive-player.dplayer-no-danmaku .dplayer-setting-danmaku,
   .ajlive-player.dplayer-no-danmaku .dplayer-setting-danunlimit{ display:none !important; }
 
-  /* time / live badge — restyle native badge as a tally lamp */
   .ajlive-player.dplayer-live .dplayer-time{ display:none; }
   .ajlive-player .dplayer-time{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--aj-text-dim); line-height:36px; padding:0 6px; }
   .ajlive-player .dplayer-live-badge{
@@ -167,7 +148,6 @@
     box-shadow:0 0 6px var(--aj-tally-glow); animation:aj-flicker 5s ease-in-out infinite; margin:0 !important; }
   @keyframes aj-flicker{ 0%,92%,100%{opacity:1;} 93%{opacity:.55;} 94%{opacity:1;} 96%{opacity:.7;} 97%{opacity:1;} }
 
-  /* injected extras inside icons-left: timecode + go-live + vu meter */
   .ajlive-tc{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--aj-text-dim); letter-spacing:1px;
     padding:0 8px; white-space:nowrap; display:inline-flex; align-items:center; height:36px; }
   .ajlive-tc b{ color:var(--aj-text); font-weight:600; margin-left:4px; }
@@ -180,7 +160,6 @@
   .ajlive-vu{ display:inline-flex; align-items:flex-end; gap:2px; height:16px; padding:0 8px; vertical-align:middle; }
   .ajlive-vu i{ width:3px; border-radius:.5px; background:var(--aj-hair-strong); display:block; transition:height .09s linear, background .09s linear; }
 
-  /* volume */
   .ajlive-player .dplayer-volume{ position:relative; display:inline-block; cursor:pointer; height:100%; }
   .ajlive-player .dplayer-volume-bar-wrap{ display:inline-block; margin:0 10px 0 -5px; vertical-align:middle; height:100%; }
   .ajlive-player .dplayer-volume-bar{ position:relative; top:17px; width:0; height:3px; background:var(--aj-hair-strong); transition:width .2s ease; }
@@ -189,7 +168,6 @@
   .ajlive-player .dplayer-volume-bar-inner{ position:absolute; bottom:0; left:0; height:100%; background:var(--aj-text) !important; }
   .ajlive-player .dplayer-volume-bar-inner .dplayer-thumb{ position:absolute; top:0; right:5px; margin:-4px -10px 0 0; height:9px; width:9px; border-radius:1px; background:var(--aj-text) !important; }
 
-  /* settings */
   .ajlive-player .dplayer-setting{ display:inline-block; height:100%; position:relative; }
   .ajlive-player .dplayer-setting-box{ position:absolute; right:0; bottom:44px; transform:scale(.97) translateY(6px);
     width:150px; background:var(--aj-panel); border:1px solid var(--aj-hair-strong); padding:2px; overflow:hidden;
@@ -210,17 +188,14 @@
   .ajlive-player .dplayer-toggle input:checked + label{ border-color:var(--aj-tally); }
   .ajlive-player .dplayer-toggle input:checked + label:after{ left:15px; background:var(--aj-tally); }
 
-  /* full screen */
   .ajlive-player .dplayer-full{ display:inline-block; height:100%; position:relative; }
   .ajlive-player .dplayer-full .dplayer-full-in-icon{ position:absolute; top:-38px; right:0; display:none; background:var(--aj-panel); border:1px solid var(--aj-hair-strong); padding:8px; }
   .ajlive-player .dplayer-full:hover .dplayer-full-in-icon{ display:flex; }
 
-  /* injected PIP button */
   .ajlive-pip-btn{ width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:2px; }
   .ajlive-pip-btn:hover{ background:var(--aj-panel-alt); }
   .ajlive-pip-btn svg{ width:18px; height:18px; }
 
-  /* notices → toast styling (DPlayer's own dp.notice API) */
   .ajlive-player .dplayer-notice-list{ position:absolute; bottom:64px; left:18px; z-index:4; }
   .ajlive-player .dplayer-notice{ border-left:2px solid var(--aj-tally); background:var(--aj-panel); border:1px solid var(--aj-hair-strong);
     border-left:2px solid var(--aj-tally); color:var(--aj-text); display:table; pointer-events:none;
@@ -229,14 +204,12 @@
   .ajlive-player .remove-notice{ animation:aj-notice-hide .25s ease 1 forwards; }
   @keyframes aj-notice-hide{ from{padding:8px 13px;font-size:12.5px;margin-top:6px;} to{padding:0;font-size:0;margin-top:0;} }
 
-  /* right-click context menu — minimal flat restyle */
   .ajlive-player .dplayer-menu{ position:absolute; width:170px; background:var(--aj-panel); border:1px solid var(--aj-hair-strong); padding:4px; z-index:5; display:none; }
   .ajlive-player .dplayer-menu.dplayer-menu-show{ display:block; }
   .ajlive-player .dplayer-menu-item{ height:28px; cursor:pointer; }
   .ajlive-player .dplayer-menu-item:hover{ background:var(--aj-panel-alt); }
   .ajlive-player .dplayer-menu-item a{ padding:0 8px; line-height:28px; color:var(--aj-text-dim); font-size:12px; display:block; text-decoration:none; }
 
-  /* mobile play button */
   .ajlive-player .dplayer-mobile-play{ display:none; width:50px; height:50px; border:none; background:transparent; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); }
   .ajlive-player.dplayer-mobile .dplayer-mobile-play{ display:block; }
   .ajlive-player.dplayer-mobile.dplayer-hide-controller .dplayer-mobile-play{ display:none; }
@@ -284,6 +257,15 @@
   const streamUrl = 'https://majed-koora.com/wewe/m3.php';
   const container = document.getElementById('ajlivePlayer');
 
+  if (!container) {
+    console.error('ajlive: #ajlivePlayer container not found — aborting init');
+    return;
+  }
+  if (typeof DPlayer === 'undefined') {
+    console.error('ajlive: DPlayer library failed to load (check CDN / network)');
+    return;
+  }
+
   const dp = new DPlayer({
     container: container,
     live: true,
@@ -300,6 +282,10 @@
       type: 'hls',
       customType: {
         hls: function (video, player) {
+          if (typeof Hls === 'undefined') {
+            console.error('ajlive: hls.js failed to load (check CDN / network)');
+            return;
+          }
           const hls = new Hls({ liveSyncDurationCount: 3, enableWorker: false });
           hls.loadSource(video.src);
           hls.attachMedia(video);
@@ -316,26 +302,38 @@
   dp.on('canplay', () => dp.play());
 
   /* ---- big custom play button synced to DPlayer's own state classes ---- */
-  document.getElementById('ajBigPlay').addEventListener('click', () => dp.toggle());
+  const bigPlayBtn = document.getElementById('ajBigPlay');
+  if (bigPlayBtn) {
+    bigPlayBtn.addEventListener('click', () => dp.toggle());
+  } else {
+    console.warn('ajlive: #ajBigPlay not found — big play button disabled');
+  }
 
   /* ---- inject timecode / go-live / VU meter into the native icon row ---- */
   const iconsLeft = container.querySelector('.dplayer-icons-left');
-  const liveBadge = container.querySelector('.dplayer-live-badge');
+
+  if (!iconsLeft) {
+    console.warn('ajlive: .dplayer-icons-left not found — DPlayer may not have finished building its controls DOM. Timecode/GoLive/VU meter will be skipped.');
+  }
 
   const tc = document.createElement('span');
   tc.className = 'ajlive-tc';
   tc.innerHTML = 'TC <b id="ajTcVal">00:00:00</b>';
-  iconsLeft.appendChild(tc);
 
   const goLive = document.createElement('span');
   goLive.className = 'ajlive-golive';
   goLive.innerHTML = '<span class="dot"></span><span id="ajGoLiveText">LIVE</span>';
-  iconsLeft.appendChild(goLive);
 
   const vu = document.createElement('span');
   vu.className = 'ajlive-vu';
   vu.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
-  iconsLeft.appendChild(vu);
+
+  if (iconsLeft) {
+    iconsLeft.appendChild(tc);
+    iconsLeft.appendChild(goLive);
+    iconsLeft.appendChild(vu);
+  }
+
   const vuBars = vu.querySelectorAll('i');
 
   function tickVu(){
@@ -359,14 +357,16 @@
     return pad(h)+':'+pad(m)+':'+pad(s);
   }
   dp.on('playing', () => { if (!sessionStart) sessionStart = Date.now(); });
-  setInterval(() => { if (sessionStart && !dp.video.paused) tcVal.textContent = fmt((Date.now()-sessionStart)/1000); }, 1000);
+  setInterval(() => {
+    if (sessionStart && !dp.video.paused && tcVal) tcVal.textContent = fmt((Date.now()-sessionStart)/1000);
+  }, 1000);
 
   let liveEdge = true;
   const golivetext = document.getElementById('ajGoLiveText');
   function setLiveEdge(isLive){
     liveEdge = isLive;
     goLive.classList.toggle('aj-catchup', !isLive);
-    golivetext.textContent = isLive ? 'LIVE' : 'GO LIVE';
+    if (golivetext) golivetext.textContent = isLive ? 'LIVE' : 'GO LIVE';
     goLive.style.color = isLive ? 'var(--aj-text-dim)' : 'var(--aj-text)';
   }
   goLive.addEventListener('click', () => {
@@ -377,10 +377,16 @@
     setLiveEdge(true);
     dp.play();
   });
-  container.querySelector('.dplayer-setting-box')?.addEventListener('click', (e) => {
-    const item = e.target.closest('.dplayer-setting-speed-item');
-    if (item) setLiveEdge(false);
-  });
+
+  const settingBox = container.querySelector('.dplayer-setting-box');
+  if (settingBox) {
+    settingBox.addEventListener('click', (e) => {
+      const item = e.target.closest('.dplayer-setting-speed-item');
+      if (item) setLiveEdge(false);
+    });
+  } else {
+    console.warn('ajlive: .dplayer-setting-box not found — speed-change go-live desync detection disabled');
+  }
 
   /* ---- inject PIP button before native fullscreen icon ---- */
   const fullWrap = container.querySelector('.dplayer-full');
@@ -388,7 +394,15 @@
   pip.className = 'ajlive-pip-btn';
   pip.title = 'Picture in picture';
   pip.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="var(--aj-text)" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="0.5"/><rect x="12" y="11.5" width="7" height="5" fill="var(--aj-text)" stroke="none"/></svg>';
-  fullWrap.parentNode.insertBefore(pip, fullWrap);
+
+  if (fullWrap && fullWrap.parentNode) {
+    fullWrap.parentNode.insertBefore(pip, fullWrap);
+  } else {
+    console.warn('ajlive: .dplayer-full not found — PIP button not inserted into controls, appending to icons-right as fallback');
+    const iconsRight = container.querySelector('.dplayer-icons-right');
+    if (iconsRight) iconsRight.appendChild(pip);
+  }
+
   pip.addEventListener('click', async () => {
     try{
       if (document.pictureInPictureElement) await document.exitPictureInPicture();
@@ -399,11 +413,11 @@
   /* ---- viewer counter (cosmetic — wire to real analytics if available) ---- */
   const viewerCountEl = document.getElementById('ajViewerCount');
   let viewers = 1240 + Math.floor(Math.random()*300);
-  viewerCountEl.textContent = viewers.toLocaleString();
+  if (viewerCountEl) viewerCountEl.textContent = viewers.toLocaleString();
   setInterval(() => {
     viewers += Math.floor(Math.random()*11) - 5;
     viewers = Math.max(50, viewers);
-    viewerCountEl.textContent = viewers.toLocaleString();
+    if (viewerCountEl) viewerCountEl.textContent = viewers.toLocaleString();
   }, 4000);
 })();
 </script>
